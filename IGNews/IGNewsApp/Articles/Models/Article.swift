@@ -9,8 +9,6 @@ import Foundation
 
 struct Article: Decodable {
     let title: String
-    let url: String
     let description: String
     let headlineImageUrl: String
-    let displayTimestamp: String
 }

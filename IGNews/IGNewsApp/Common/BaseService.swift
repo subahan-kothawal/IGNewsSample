@@ -9,6 +9,8 @@ import Foundation
 import UIKit
 
 class BaseService: Service {
+    
+    var parser: ResponseParser?
     var baseUrl: String
     var requestUrl: String
     var requestType: RequestType

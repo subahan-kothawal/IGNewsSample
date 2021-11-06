@@ -9,40 +9,52 @@ import UIKit
 
 class NewsListViewController: UITableViewController {
 
+    let viewModel = NewsListViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        viewModel.fetchData { [weak self] error in
+            guard error == nil else{
+                print("Unable to fetch Newslist failed with error :" , error as Any)
+                return
+            }
+            self?.tableView.reloadData()
+        }
     }
 
     // MARK: - Table view data source
 
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.numberOfSections
+    }
+    
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.titleForSection(section)
+    }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return viewModel.numberOfRows(section)
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as? NewsListTableViewCell else { return tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) }
 
-        // Configure the cell...
-
+        let article = viewModel.article(at: indexPath)
+        cell.updateNewsDetailToCell(article: article)
         return cell
     }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let article = viewModel.article(at: indexPath)
+        updateNewsDetails(article: article)
     }
-    */
+    
+    private func updateNewsDetails(article: Article?) {
+        guard let article = article,
+              let navVC = self.splitViewController?.viewControllers.last as? UINavigationController,
+        let detailVC = navVC.topViewController as? NewsDetailViewController else { return }
+        detailVC.updateUI(article: article)
+    }
 
 }

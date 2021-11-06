@@ -8,22 +8,18 @@
 import UIKit
 
 class NewsDetailViewController: UIViewController {
-
+    @IBOutlet weak var newsHeader: UILabel!
+    @IBOutlet weak var newsPicture: UIImageView!
+    @IBOutlet weak var newsInfo: UITextView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func updateUI(article: Article){
+        newsHeader.text = article.title
+        newsPicture.loadImageUsingCache(withUrl: article.headlineImageUrl, placeHolder: UIImage.init(named: "placeHolder"))
+        newsInfo.text = article.description
     }
-    */
 
 }

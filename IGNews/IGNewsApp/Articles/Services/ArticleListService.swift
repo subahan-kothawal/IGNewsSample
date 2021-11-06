@@ -12,5 +12,6 @@ class ArticleListService: BaseService {
     override init() {
         super.init()
         requestUrl = Constants.articlesPath
+        parser = GenericParser<ArticleList>()
     }
 }

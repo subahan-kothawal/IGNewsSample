@@ -10,7 +10,6 @@ import Foundation
 struct ArticleList: Decodable {
     let breakingNews: [Article]?
     let topNews: [Article]?
-    //let dailyBriefings: [Article]?
     let technicalAnalysis: [Article]?
     let specialReport: [Article]?
 }
